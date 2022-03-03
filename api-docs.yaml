@@ -1,0 +1,4065 @@
+openapi: 3.0.1
+info:
+  title: Previder
+  description: |
+    <p>As a Previder customer, you can take advantage of the Previder REST API. By using the API, you can integrate the
+        Previder products within your custom software.</p>
+    <h3>Response format</h3>
+    <p>All responses are formatted using JSON conforming the HAL specification. HAL is a simple format that gives a
+        consistent and easy way to hyperlink between resources in the API. Links are only provided when relevant and
+        applicable for the given resource.</p>
+    <h3>Authentication</h3>
+    <p>All API endpoints require the client to authenticate with a X-Auth-Token header. Most client libraries provide a
+        simple mechanism for supplying a custom authentication header.</p>
+    <h3>Error handling</h3>
+    <p>Errors are returned in JSON format and will always contain a message attribute. If the error is triggered due to
+        invalid user input, it will also contain an errors property describing the errors for each invalid property.</p>
+    <h3>Rate limiting</h3>
+    <p>Each account is allowed to perform API calls with a maximum of 1500 API calls per 5 minutes. When the client exceeds
+        the rate limit, the client is blocked for the remaining time and a "429 Too Many Requests" response will be returned
+        during that period. Response headers "X-RateLimit-Limit", "X-RateLimit-Remaining" and "X-Rate-Limit-Reset" are
+        provided to be able to perform automated client throttling.</p>
+  version: "2.1"
+servers:
+- url: http://api:8080
+  description: Generated server url
+security:
+- Previder Portal Token:
+  - read
+  - write
+tags:
+- name: IaaS Compute Cluster API
+- name: IaaS ISO API
+- name: IaaS Image File API
+- name: IaaS Image File Upload API
+- name: IaaS Task API
+- name: IaaS Template API
+- name: IaaS Virtual Machine API
+- name: IaaS Virtual Machine Backup API
+- name: IaaS Virtual Machine Schedule API
+- name: IaaS Virtual Machine Snapshot API
+- name: IaaS Virtual Machine Statistics API
+- name: IaaS Virtual Machine Usage API
+- name: IaaS Virtual Network API
+paths:
+  /api/v2/iaas/computecluster/:
+    get:
+      tags:
+      - IaaS Compute Cluster API
+      description: List all available compute clusters
+      operationId: list_5
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComputeCluster'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/computecluster/{id}/flavor:
+    get:
+      tags:
+      - IaaS Compute Cluster API
+      description: List all available flavors in the specific compute clusters
+      operationId: flavorList
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComputeClusterFlavor'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/imagefile/:
+    get:
+      tags:
+      - IaaS Image File API
+      description: List image files
+      operationId: list_4
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageImage File'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Image File API
+      description: Create a new image file to upload
+      operationId: create_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageFileCreate'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image File'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/imagefile/{id}:
+    get:
+      tags:
+      - IaaS Image File API
+      description: Get a specific image file
+      operationId: get_6
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image File Extended view'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS Image File API
+      description: Delete an image file
+      operationId: delete_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/imagefile/{id}/upload:
+    get:
+      tags:
+      - IaaS Image File Upload API
+      operationId: uploadGet
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      - name: flowChunkNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Image File Upload API
+      operationId: uploadData
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      - name: flowChunkNumber
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: flowTotalChunks
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: flowTotalSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: flowChunkSize
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: flowFilename
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/imagefile/{imageFileId}/virtualmachines:
+    get:
+      tags:
+      - IaaS Image File API
+      description: Get a page of Virtual Servers for this image file
+      operationId: listPageVirtualMachinesByImageFileId
+      parameters:
+      - name: imageFileId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/schedule/:
+    get:
+      tags:
+      - IaaS Virtual Machine Schedule API
+      description: Get a list of all schedules
+      operationId: list_3
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ""
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageVirtual Machine Schedule'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Virtual Machine Schedule API
+      description: Create a new virtual machine schedule
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Virtual Machine Schedule Create / Update'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/schedule/{id}:
+    get:
+      tags:
+      - IaaS Virtual Machine Schedule API
+      description: Get a specific virtual machine schedule
+      operationId: get_5
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Schedule'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    put:
+      tags:
+      - IaaS Virtual Machine Schedule API
+      description: Update a virtual machine schedule
+      operationId: update_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Virtual Machine Schedule Create / Update'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS Virtual Machine Schedule API
+      description: Delete a virtual machine schedule
+      operationId: delete_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/schedule/{id}/runonce:
+    post:
+      tags:
+      - IaaS Virtual Machine Schedule API
+      description: Run a virtual machine schedule once
+      operationId: runOnce
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/task/:
+    get:
+      tags:
+      - IaaS Task API
+      description: List recent tasks
+      operationId: recent
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 300
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/task/virtualmachine/{id}:
+    get:
+      tags:
+      - IaaS Task API
+      description: List tasks for a specific virtualmachine
+      operationId: virtualMachineTasks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 300
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/task/{id}:
+    get:
+      tags:
+      - IaaS Task API
+      description: Get a specific task
+      operationId: get_4
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectId'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/template/:
+    get:
+      tags:
+      - IaaS Template API
+      description: List all virtual machine templates
+      operationId: list_2
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualMachineTemplate'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a list of all virtual machines
+      operationId: list_1
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: tags
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageVirtual Machine Base View'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Virtual Machine API
+      description: Create a new virtual machine
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachineCreate'
+        required: true
+      responses:
+        "201":
+          description: The task has been accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "400":
+          description: There where some errors in your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/backupoverview:
+    get:
+      tags:
+      - IaaS Virtual Machine Backup API
+      description: Get a overview of all backups
+      operationId: getBackupsOverview
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Virtual Machine Backup Overview'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/backupprofile:
+    get:
+      tags:
+      - IaaS Virtual Machine Backup API
+      description: Get a specific virtual machine
+      operationId: getBackupProfiles
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BackupProfile'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/guestids:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a list of available guest operating systems
+      operationId: getGuestIdList
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualMachineGuestIdView'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/limit:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get limits for all virtual machines
+      operationId: getLimits
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  empty:
+                    type: boolean
+                additionalProperties:
+                  $ref: '#/components/schemas/Limit'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/price:
+    post:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a quotation for the supplied virtual machine
+      operationId: getPrice_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachinePriceRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/tags:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a list of virtual machine tags
+      operationId: getTags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/tags/page:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a page of virtual machine tags
+      operationId: getTagsPage
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageString'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/usage/count:
+    get:
+      tags:
+      - IaaS Virtual Machine Usage API
+      description: Get the number of virtual servers of a specific year
+      operationId: getVirtualMachineCountUsage
+      parameters:
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/usage/monthly/cluster:
+    get:
+      tags:
+      - IaaS Virtual Machine Usage API
+      description: Get the resources per cluster and customer
+      operationId: getCustomerComputeClusterMonthlyUsage
+      parameters:
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: convertHoursToUnits
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Compute Cluster Customer Usage'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/usage/monthly/cluster/{cluster}:
+    get:
+      tags:
+      - IaaS Virtual Machine Usage API
+      description: "Get the resources of a cluster, per cluster customer and virtual\
+        \ machine"
+      operationId: getCustomerComputeClusterVirtualMachineMonthlyUsage
+      parameters:
+      - name: cluster
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: convertHoursToUnits
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualMachineCustomerUsage'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/usage/monthly/export:
+    get:
+      tags:
+      - IaaS Virtual Machine Usage API
+      description: "Get the resources of all clusters, per cluster customer and virtual\
+        \ machine"
+      operationId: getCustomerComputeClusterVirtualMachineMonthlyTotalUsage
+      parameters:
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: convertHoursToUnits
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualMachineCustomerUsage'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/usage/resource:
+    get:
+      tags:
+      - IaaS Virtual Machine Usage API
+      description: Get the resource usage of a specific year
+      operationId: getVirtualMachineResourceUsage
+      parameters:
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - VCPU
+          - MEMORY
+          - STORAGE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a specific virtual machine
+      operationId: get_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualMachineView'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    put:
+      tags:
+      - IaaS Virtual Machine API
+      description: Update a virtual machine
+      operationId: update_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachineUpdate'
+        required: true
+      responses:
+        "201":
+          description: The task has been accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "400":
+          description: There where some errors in your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS Virtual Machine API
+      description: Delete a virtual machine
+      operationId: delete_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/action/{action}:
+    post:
+      tags:
+      - IaaS Virtual Machine API
+      description: "Execute a control task (e.g. poweron, poweroff, reset) on a specific\
+        \ virtual machine"
+      operationId: control
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: action
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - POWERON
+          - RESTART
+          - RESET
+          - POWEROFF
+          - SHUTDOWN
+          - SUSPEND
+          - OPENCONSOLE
+          - INSTALL_GUEST_TOOLS
+          - UPGRADE_GUEST_TOOLS
+          - POWERON_BIOS
+          - RESTART_BIOS
+          - RESET_BIOS
+          - MOUNT_ISO
+          - UNMOUNT_ISO
+          - REFRESH_STATE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/backup:
+    get:
+      tags:
+      - IaaS Virtual Machine Backup API
+      description: Get a specific virtual machine
+      operationId: get_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expired
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Backup view'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/backup/{backupId}/restore:
+    post:
+      tags:
+      - IaaS Virtual Machine Backup API
+      description: Restore the backup of a specific virtual machine
+      operationId: restoreBackup
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: backupId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachineBackupRestore'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/cdrom:
+    post:
+      tags:
+      - IaaS ISO API
+      description: Mount an image to a virtual machine
+      operationId: mountImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachineISOMount'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS ISO API
+      description: Unmount an image from a virtual machine
+      operationId: unmountImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/comments:
+    put:
+      tags:
+      - IaaS Virtual Machine API
+      description: Update the notes for a virtual machine
+      operationId: updateNotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachineCommentsUpdate'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/console:
+    post:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get the console of the specified virtual machine
+      operationId: console
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualMachineConsole'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/disk/{diskId}/stats:
+    get:
+      tags:
+      - IaaS Virtual Machine Statistics API
+      description: Get statistics for a specific virtual disk
+      operationId: getDisksStats
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: diskId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: startDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: module
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RRDResultRRDContent'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/networkinterface/{networkInterfaceId}/stats:
+    get:
+      tags:
+      - IaaS Virtual Machine Statistics API
+      description: Get statistics for a specific virtual network interface
+      operationId: getNetworkInterfaceStats
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: networkInterfaceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: startDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RRDResultRRDContent'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/snapshot:
+    get:
+      tags:
+      - IaaS Virtual Machine Snapshot API
+      description: Get a list of snapshots
+      operationId: getSnapshots
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualMachineSnapshot'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Virtual Machine Snapshot API
+      description: Create a new snapshot
+      operationId: createSnapshot
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Virtual Machine Snapshot Create'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/snapshot/{snapshotId}:
+    put:
+      tags:
+      - IaaS Virtual Machine Snapshot API
+      description: Revert to an existing snapshot
+      operationId: revertSnapshot
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: snapshotId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS Virtual Machine Snapshot API
+      description: Delete a specific snapshot
+      operationId: deleteSnapshot
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: snapshotId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: removeChildren
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/stats:
+    get:
+      tags:
+      - IaaS Virtual Machine Statistics API
+      description: Get statistics for a specific virtual machine
+      operationId: get_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: month
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: startDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: module
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RRDResultRRDContent'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualmachine/{id}/task:
+    get:
+      tags:
+      - IaaS Virtual Machine API
+      description: Get a specific virtual machine task
+      operationId: task
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageVirtual Machine Task'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualnetwork/:
+    get:
+      tags:
+      - IaaS Virtual Network API
+      description: Get a list of all virtual networks
+      operationId: list
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: tags
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: publicNet
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageVirtual Network Base View'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Virtual Network API
+      description: Create a new virtual network
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualNetworkCreate'
+        required: true
+      responses:
+        "200":
+          description: The task has been accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network Task view'
+        "400":
+          description: There where some errors in your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network Task view'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualnetwork/price:
+    post:
+      tags:
+      - IaaS Virtual Network API
+      description: Get a quotation for the supplied virtual network
+      operationId: getPrice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualNetworkPriceRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualnetwork/{id}:
+    get:
+      tags:
+      - IaaS Virtual Network API
+      description: Get a specific virtual network
+      operationId: get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network view'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    put:
+      tags:
+      - IaaS Virtual Network API
+      description: Update a virtual network
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Virtual Network Update'
+        required: true
+      responses:
+        "200":
+          description: The changes have been processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network Task view'
+        "201":
+          description: The task has been accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network Task view'
+        "400":
+          description: There where some errors in your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network Task view'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS Virtual Network API
+      description: Delete a virtual network
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Virtual Network Task view'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualnetwork/{id}/addresspool:
+    get:
+      tags:
+      - IaaS Virtual Network API
+      description: Get a list of address pools for the specific virtual network
+      operationId: getAddressPools
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressPool'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    post:
+      tags:
+      - IaaS Virtual Network API
+      description: Create address pool in the specified virtualNetwork
+      operationId: createAddressPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address Pool Create'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressPool'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualnetwork/{id}/addresspool/{addressPoolId}:
+    get:
+      tags:
+      - IaaS Virtual Network API
+      description: Get the specified address pool
+      operationId: getAddressPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: addressPoolId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressPool'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    put:
+      tags:
+      - IaaS Virtual Network API
+      description: Update address pool in the specified virtualNetwork
+      operationId: updateAddressPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: addressPoolId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressPoolUpdate'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressPool'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+    delete:
+      tags:
+      - IaaS Virtual Network API
+      description: Delete the specified address pool
+      operationId: deleteAddressPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: addressPoolId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+  /api/v2/iaas/virtualnetwork/{id}/virtualmachine:
+    get:
+      tags:
+      - IaaS Virtual Network API
+      description: Get a page of virtual machines for the specific virtual network
+      operationId: getVirtualMachinePage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageVirtual Machine Network Address'
+        "401":
+          description: Unauthorized or invalid token
+          content:
+            application/json: {}
+        "403":
+          description: "Forbidden, no permissions to view this object"
+          content:
+            application/json: {}
+components:
+  schemas:
+    Virtual Network Update:
+      required:
+      - name
+      - tags
+      type: object
+      properties:
+        name:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Unique name for the network
+          example: my-network
+        group:
+          type: string
+          description: Group to add the new network to
+          example: group
+        tags:
+          maxItems: 50
+          minItems: 0
+          type: array
+          description: List of strings for extra search possibilities
+          example:
+          - tag1
+          - tag2
+          items:
+            type: string
+            description: List of strings for extra search possibilities
+            example: "[\"tag1\",\"tag2\"]"
+        customerReference:
+          type: string
+          description: Sales reference for the new network
+        members:
+          maxItems: 20
+          minItems: 0
+          type: array
+          description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
+          example:
+          - network1
+          - network2
+          items:
+            type: string
+            description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
+            example: "[\"network1\",\"network2\"]"
+        sharedWith:
+          maxItems: 20
+          minItems: 0
+          type: array
+          description: List of customer id's to share this network with
+          example:
+          - customer1
+          - customer2
+          items:
+            type: string
+            description: List of customer id's to share this network with
+            example: "[\"customer1\",\"customer2\"]"
+      description: Model to use to update an existing network
+    Virtual Network Task view:
+      type: object
+      properties:
+        description:
+          type: object
+          additionalProperties:
+            type: string
+            description: The description
+          description: The description
+        id:
+          type: string
+          description: The task identifier
+        error:
+          type: boolean
+          description: Indicating that this task is failed with an error
+        completed:
+          type: boolean
+          description: Indicating that this task is completed
+        errorMessage:
+          type: string
+          description: The error message
+        taskDate:
+          type: string
+          description: The timestamp of when this task is submitted
+          format: date-time
+        completedDate:
+          type: string
+          description: The timestamp of when this task is completed or failed
+          format: date-time
+        progress:
+          type: integer
+          description: Progress of the task. (Only when the backend supports this)
+          format: int32
+        startedDate:
+          type: string
+          description: The timestamp of when this task is picked up in the backend
+          format: date-time
+        user:
+          type: string
+          description: The user who submitted this task
+        success:
+          type: boolean
+          description: Indicating that this task is successfully completed
+        taskType:
+          type: string
+          description: The task type
+    AddressPoolUpdate:
+      required:
+      - end
+      - mask
+      - start
+      - type
+      type: object
+      properties:
+        start:
+          type: string
+          description: Start address (IPv4 or IPv6) for the address pool
+          example: 192.168.1.5
+        end:
+          type: string
+          description: End address (IPv4 or IPv6) for the address pool
+          example: 192.168.1.50
+        mask:
+          type: string
+          description: Network mask (IPv4 or IPv6)
+          example: 255.255.255.0
+        gateway:
+          type: string
+          description: Network mask (IPv4 or IPv6)
+          example: 192.168.1.1
+        nameServers:
+          type: array
+          description: List of DNS servers (IPv4 or IPv6)
+          example:
+          - 80.65.96.50
+          - 62.165.127.222
+          items:
+            type: string
+            description: List of DNS servers (IPv4 or IPv6)
+            example: "[\"80.65.96.50\",\"62.165.127.222\"]"
+        type:
+          type: string
+          description: Type of the new address pool
+          example: IPV4
+      description: Model to use to update an existing address pool
+    AddressPool:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The address pool identifier
+        type:
+          type: string
+          description: The address pool IP type
+        mask:
+          type: string
+          description: The address pool subnet mask
+        start:
+          type: string
+          description: The address pool start address
+        end:
+          type: string
+          description: The address pool end address
+        gateway:
+          type: string
+          description: The address pool gateway
+        nameServers:
+          type: array
+          description: The address pool name servers
+          items:
+            type: string
+            description: The address pool name servers
+        virtualNetwork:
+          type: string
+          description: The address pool virtual network
+    DiskUpdate:
+      required:
+      - size
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Will add a new disk if this property is not defined, otherwise\
+            \ it will update the disk if exists"
+          example: 0123456789abcdef01234567
+        size:
+          maximum: 5242880
+          minimum: 0
+          type: integer
+          description: "Disk size in MB, will only grow disks, shrinking is not possible"
+          format: int64
+          example: 10240
+        label:
+          type: string
+          description: Disk label
+          example: OS disk
+        delete:
+          type: boolean
+          description: Disk should be deleted
+          example: true
+      description: Disks
+    NetworkInterfaceUpdate:
+      required:
+      - connected
+      - network
+      type: object
+      properties:
+        id:
+          type: string
+        network:
+          type: string
+          description: Name of an existing network in your account
+          example: public-wan
+        connected:
+          type: boolean
+          description: Should the network interface be connected
+          example: true
+        label:
+          type: string
+          description: Label of this network interface
+          example: WAN NIC
+        type:
+          type: string
+          description: "Optional parameter to set the NIC type, ignored on NIC update"
+          example: VMXNET3
+          enum:
+          - E1000
+          - E1000E
+          - VMXNET3
+      description: Network interfaces
+    VirtualMachineUpdate:
+      required:
+      - computeCluster
+      - cpuCores
+      - disks
+      - markedAsTemplate
+      - memory
+      - name
+      - networkInterfaces
+      - tags
+      - terminationProtectionEnabled
+      type: object
+      properties:
+        name:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Unique name for the new virtual machine
+          example: my-virtual-machine
+        group:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Group to add the existing virtual machine to
+          example: group
+        tags:
+          maxItems: 50
+          minItems: 0
+          type: array
+          description: List of strings for extra search possibilities
+          example:
+          - tag1
+          - tag2
+          items:
+            type: string
+            description: List of strings for extra search possibilities
+            example: "[\"tag1\",\"tag2\"]"
+        computeCluster:
+          type: string
+          description: Compute cluster name
+        cpuCores:
+          maximum: 32
+          minimum: 1
+          type: integer
+          description: Number of CPU cores
+          format: int32
+          example: 2
+        cpuSockets:
+          maximum: 32
+          minimum: 1
+          type: integer
+          description: "Number of CPU sockets to spread the cores over (cpuCores must\
+            \ be divisible by cpuSockets with no remainders), defaults to number of\
+            \ cores (1 core per socket)"
+          format: int32
+          example: 1
+        memory:
+          maximum: 524288
+          minimum: 512
+          type: integer
+          description: Memory in MB
+          format: int32
+          example: 1024
+        disks:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          description: Disks
+          items:
+            $ref: '#/components/schemas/DiskUpdate'
+        networkInterfaces:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          description: Network interfaces
+          items:
+            $ref: '#/components/schemas/NetworkInterfaceUpdate'
+        terminationProtectionEnabled:
+          type: boolean
+          description: Enable termination protection
+          example: true
+        markedAsTemplate:
+          type: boolean
+          description: Mark this virtual machine as template
+          example: false
+        flavor:
+          type: string
+          description: "Providing a flavor, overrides seperate CPU cores, memoryMb\
+            \ and disks. Can only be upgraded"
+          example: entry.1
+      description: Model to use to update an existing virtual machine
+    Virtual Machine Task:
+      type: object
+      properties:
+        description:
+          type: object
+          additionalProperties:
+            type: string
+            description: The description
+          description: The description
+        virtualMachineName:
+          type: string
+          description: The virtual machine name
+        virtualMachine:
+          type: string
+          description: The virtual machine identifier
+        id:
+          type: string
+          description: The task identifier
+        error:
+          type: boolean
+          description: Indicating that this task is failed with an error
+        completed:
+          type: boolean
+          description: Indicating that this task is completed
+        errorMessage:
+          type: string
+          description: The error message
+        taskDate:
+          type: string
+          description: The timestamp of when this task is submitted
+          format: date-time
+        completedDate:
+          type: string
+          description: The timestamp of when this task is completed or failed
+          format: date-time
+        progress:
+          type: integer
+          description: Progress of the task. (Only when the backend supports this)
+          format: int32
+        startedDate:
+          type: string
+          description: The timestamp of when this task is picked up in the backend
+          format: date-time
+        user:
+          type: string
+          description: The user who submitted this task
+        success:
+          type: boolean
+          description: Indicating that this task is successfully completed
+        taskType:
+          type: string
+          description: The task type
+    VirtualMachineCommentsUpdate:
+      required:
+      - comment
+      type: object
+      properties:
+        comment:
+          type: string
+          description: "Text field for keeping internal notes for a virtual machine,\
+            \ these notes are saved plain-text"
+          example: Comments for a virtual machine
+      description: Model to use when updating comments for a virtual machine
+    Address Pool Create:
+      required:
+      - end
+      - mask
+      - start
+      - type
+      type: object
+      properties:
+        start:
+          type: string
+          description: Start address (IPv4 or IPv6) for the new address pool
+          example: 192.168.1.5
+        end:
+          type: string
+          description: End address (IPv4 or IPv6) for the new address pool
+          example: 192.168.1.50
+        mask:
+          type: string
+          description: Network mask (IPv4 or IPv6)
+          example: 255.255.255.0
+        gateway:
+          type: string
+          description: Network mask (IPv4 or IPv6)
+          example: 192.168.1.1
+        nameServers:
+          type: array
+          description: List of DNS servers (IPv4 or IPv6)
+          example:
+          - 80.65.96.50
+          - 62.165.127.222
+          items:
+            type: string
+            description: List of DNS servers (IPv4 or IPv6)
+            example: "[\"80.65.96.50\",\"62.165.127.222\"]"
+        type:
+          type: string
+          description: Type of the new address pool
+          example: IPV4
+      description: Model to use to create a new address pool
+    VirtualNetworkPriceRequest:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          example: IAN
+      description: To get a quotation for a specific network configuration
+    Quote:
+      type: object
+      properties:
+        totalPrice:
+          type: number
+          description: The total quote price
+          format: double
+        lines:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/QuoteLine'
+          description: The quote lines
+    QuoteLine:
+      type: object
+      properties:
+        price:
+          type: number
+          description: The quote line price
+          format: double
+        totalPrice:
+          type: number
+          description: The total quote line price
+          format: double
+        quantity:
+          type: number
+          description: The line quantity
+          format: double
+      description: The quote lines
+    VirtualNetworkCreate:
+      required:
+      - name
+      - tags
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Unique name for the new network
+          example: my-network
+        group:
+          type: string
+          description: Group to add the new network to
+          example: group
+        type:
+          type: string
+          description: Type of the new network
+          example: IAN
+          enum:
+          - VLAN
+          - VXLAN
+          - NONE
+          - IAN
+          - VLAN_TRUNK
+        customerReference:
+          type: string
+          description: Sales reference for the new network
+        tags:
+          maxItems: 50
+          minItems: 0
+          type: array
+          description: List of strings for extra search possibilities
+          example:
+          - tag1
+          - tag2
+          items:
+            type: string
+            description: List of strings for extra search possibilities
+            example: "[\"tag1\",\"tag2\"]"
+        members:
+          maxItems: 20
+          minItems: 0
+          type: array
+          description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
+          example:
+          - network1
+          - network2
+          items:
+            type: string
+            description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
+            example: "[\"network1\",\"network2\"]"
+        sharedWith:
+          maxItems: 20
+          minItems: 0
+          type: array
+          description: List of customer id's to share this network with
+          example:
+          - customer1
+          - customer2
+          items:
+            type: string
+            description: List of customer id's to share this network with
+            example: "[\"customer1\",\"customer2\"]"
+      description: Model to use when creating a new network
+    Virtual Machine Snapshot Create:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: A descriptive name for the new snapshot
+          example: snapshot-1
+        memory:
+          type: boolean
+          description: Should the new snapshot contain the active memory
+          example: true
+        quiesce:
+          type: boolean
+          description: "While creating the snapshot, lock the virtual machine for\
+            \ a consistant state"
+          example: true
+      description: Model to use to create a new snapshot for a virtual machine
+    VirtualMachineConsole:
+      type: object
+      properties:
+        The URL to open the console:
+          type: string
+    VirtualMachineISOMount:
+      required:
+      - imageFile
+      type: object
+      properties:
+        imageFile:
+          type: string
+          description: Name or id of the image file
+          example: isofile1.iso
+      description: Model to use to mount an ISO file to a virtual machine
+    VirtualMachineBackupRestore:
+      type: object
+      properties:
+        name:
+          maxLength: 50
+          minLength: 2
+          type: string
+          example: my-restored-virtual-machine
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The task identifier
+        error:
+          type: boolean
+          description: Indicating that this task is failed with an error
+        completed:
+          type: boolean
+          description: Indicating that this task is completed
+        errorMessage:
+          type: string
+          description: The error message
+        taskDate:
+          type: string
+          description: The timestamp of when this task is submitted
+          format: date-time
+        completedDate:
+          type: string
+          description: The timestamp of when this task is completed or failed
+          format: date-time
+        progress:
+          type: integer
+          description: Progress of the task. (Only when the backend supports this)
+          format: int32
+        description:
+          type: object
+          additionalProperties:
+            type: string
+            description: The description
+          description: The description
+        startedDate:
+          type: string
+          description: The timestamp of when this task is picked up in the backend
+          format: date-time
+        user:
+          type: string
+          description: The user who submitted this task
+        success:
+          type: boolean
+          description: Indicating that this task is successfully completed
+        taskType:
+          type: string
+          description: The task type
+      description: Generic task view
+    VirtualMachinePriceRequest:
+      required:
+      - computeCluster
+      - disks
+      - networkInterfaces
+      type: object
+      properties:
+        computeCluster:
+          type: string
+          description: Compute cluster name
+          example: express-pdc1
+        cpuCores:
+          type: integer
+          description: Number of CPU cores
+          format: int32
+          example: 2
+        memory:
+          type: integer
+          description: Memory in MB
+          format: int32
+          example: 1024
+        flavor:
+          type: string
+          description: Flavor
+          example: Entry 1
+        disks:
+          type: array
+          description: Disks
+          items:
+            $ref: '#/components/schemas/DiskUpdate'
+        networkInterfaces:
+          type: array
+          description: Network interfaces
+          items:
+            $ref: '#/components/schemas/NetworkInterfaceUpdate'
+        template:
+          type: string
+          description: "Name of the template to use. Either a template, sourceVirtualMachine\
+            \ or a guestId is required"
+          example: ubuntu-16.04
+        guestId:
+          type: string
+          description: "VMWare guestId to use. Either a template, sourceVirtualMachine\
+            \ or a guestId is required"
+          example: emptylinuxunixx64
+        sourceVirtualMachine:
+          type: string
+          description: "ID of the virtual machine to clone. Either a template, sourceVirtualMachine\
+            \ or a guestId is required"
+          example: 55d5b3adf4fef55f2985ba3e
+      description: To get a quotation for a specific virtual machine configuration
+    VirtualMachineCreate:
+      required:
+      - computeCluster
+      - cpuCores
+      - disks
+      - memory
+      - name
+      - networkInterfaces
+      - tags
+      - terminationProtectionEnabled
+      type: object
+      properties:
+        name:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Unique name for the new virtual machine
+          example: my-virtual-machine
+        group:
+          maxLength: 50
+          minLength: 2
+          type: string
+          description: Group to add the new virtual machine to
+          example: group
+        tags:
+          maxItems: 50
+          minItems: 0
+          type: array
+          description: List of strings for extra search possibilities
+          example:
+          - tag1
+          - tag2
+          items:
+            type: string
+            description: List of strings for extra search possibilities
+            example: "[\"tag1\",\"tag2\"]"
+        computeCluster:
+          type: string
+          description: Compute cluster name
+          example: express-pdc1
+        cpuCores:
+          maximum: 32
+          minimum: 1
+          type: integer
+          description: Number of CPU cores
+          format: int32
+          example: 2
+        cpuSockets:
+          maximum: 32
+          minimum: 1
+          type: integer
+          description: "Number of CPU sockets to spread the cores over (cpuCores must\
+            \ be divisible by cpuSockets with no remainders), defaults to number of\
+            \ cores (1 core per socket)"
+          format: int32
+          example: 1
+        memory:
+          maximum: 524288
+          minimum: 512
+          type: integer
+          description: Memory in MB
+          format: int32
+          example: 1024
+        disks:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          description: Disks
+          items:
+            $ref: '#/components/schemas/DiskUpdate'
+        networkInterfaces:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          description: Network interfaces
+          items:
+            $ref: '#/components/schemas/NetworkInterfaceUpdate'
+        terminationProtectionEnabled:
+          type: boolean
+          description: Enable termination protection
+          example: true
+        flavor:
+          type: string
+          description: "Providing a flavor, overrides seperate CPU cores, memoryMb\
+            \ and disks"
+          example: entry.1
+        template:
+          type: string
+          description: "Name of the template to use. Either a template, sourceVirtualMachine\
+            \ or a guestId is required"
+          example: ubuntu-16.04
+        sourceVirtualMachine:
+          type: string
+          description: "ID of the virtual machine to clone. Either a template, sourceVirtualMachine\
+            \ or a guestId is required"
+          example: 55d5b3adf4fef55f2985ba3e
+        userData:
+          type: string
+          description: Should only contain correct provisioning data for the chosen
+            provisioning type
+          example: |-
+            #cloud-config
+
+            password: mySecretPassword
+            ...
+        guestId:
+          type: string
+          description: "VMWare guestId to use. Either a template, sourceVirtualMachine\
+            \ or a guestId is required"
+          example: emptylinuxunixx64
+        provisioningType:
+          type: string
+          description: Choose the provisioning type which has been prepaired on the
+            sourceVirtualMachine
+          example: CLOUD_INIT_GUEST_INFO
+          enum:
+          - NONE
+          - CLOUD_INIT_OVF
+          - SYSPREP
+          - SYSPREP_TEXT
+          - CONFIG_DRIVE_2
+          - KICKSTART
+          - CLOUD_INIT_OVF2
+          - CLOUD_INIT_GUEST_INFO
+      description: Model to use when creating a new virtual machine
+    ObjectId:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+    ImageFileCreate:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 100
+          minLength: 5
+          type: string
+    Image File:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The image file name
+        id:
+          type: string
+          description: The image file identifier
+        state:
+          type: string
+          description: The image file upload state
+          enum:
+          - NEW
+          - UPLOADING
+          - QUEUED
+          - MOVING
+          - FAILED
+          - SUCCESS
+          - DELETED
+    CustomerView:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          $ref: '#/components/schemas/ObjectId'
+        language:
+          type: string
+        partner:
+          type: boolean
+        hidingPrices:
+          type: boolean
+        verificationStatus:
+          type: string
+        ocfId:
+          type: integer
+          format: int32
+        nfaId:
+          type: string
+        city:
+          type: string
+        countryCode:
+          type: string
+        invoiceToPartner:
+          type: boolean
+        accountName:
+          type: string
+        purchaseOrderNumber:
+          type: string
+    Virtual Network Base view:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The virtual network identifier
+          example: 55d5b3adf4fef55f2985ba3f
+        name:
+          type: string
+          description: The virtual network name
+          example: my-virtual-network
+        state:
+          type: string
+          description: The virtual network state
+          example: READY
+        public:
+          type: boolean
+          description: Public network
+        type:
+          type: string
+          description: The virtual network type
+          example: VLAN
+        ownerName:
+          type: string
+        vlanId:
+          type: integer
+          description: The associated VLAN id
+          format: int32
+        groupName:
+          type: string
+          description: The group this virtual network belongs to
+          example: my-group
+        group:
+          type: string
+          description: The group this virtual network belongs to
+          example: 55d5b3adf4fef55f2985ba3f
+        managed:
+          type: boolean
+          description: Indicating that this is a managed virtual network
+    Virtual Network view:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The virtual network identifier
+          example: 55d5b3adf4fef55f2985ba3f
+        name:
+          type: string
+          description: The virtual network name
+          example: my-virtual-network
+        owner:
+          type: boolean
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Virtual Network Base view'
+        tags:
+          type: array
+          description: The tags
+          example: "[tag1,tag2,...]"
+          items:
+            type: string
+            description: The tags
+            example: "[tag1,tag2,...]"
+        sharedWith:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerView'
+        customerReference:
+          type: string
+          description: Additional customer reference
+          example: po512354
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        lastModifiedBy:
+          type: string
+        publicNet:
+          type: boolean
+          description: Indicating that this is a public network (read only)
+        lastModifiedAt:
+          type: string
+          format: date-time
+        public:
+          type: boolean
+          description: Public network
+        state:
+          type: string
+          description: The virtual network state
+          example: READY
+        type:
+          type: string
+          description: The virtual network type
+          example: VLAN
+        ownerName:
+          type: string
+        vlanId:
+          type: integer
+          description: The associated VLAN id
+          format: int32
+        groupName:
+          type: string
+          description: The group this virtual network belongs to
+          example: my-group
+        group:
+          type: string
+          description: The group this virtual network belongs to
+          example: 55d5b3adf4fef55f2985ba3f
+        managed:
+          type: boolean
+          description: Indicating that this is a managed virtual network
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    NetworkInterfaceView:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The network interface identifier
+        type:
+          type: string
+          description: The network interface type
+          enum:
+          - E1000
+          - E1000E
+          - VMXNET3
+        assignedAddresses:
+          type: array
+          description: The assigned addresses
+          items:
+            type: string
+            description: The assigned addresses
+        assignedAddressesPoolInfo:
+          type: array
+          description: The assigned addresses pool information
+          items:
+            $ref: '#/components/schemas/AddressPool'
+        networkName:
+          type: string
+          description: The connected virtual network name
+        connected:
+          type: boolean
+          description: Indicating the connection state
+        macAddress:
+          type: string
+          description: The MAC address
+        network:
+          type: string
+          description: The connected virtual network identifier
+        managed:
+          type: boolean
+          description: Network interface is linked to a managed network
+        label:
+          type: string
+          description: Network interface label
+        discoveredAddresses:
+          type: array
+          description: The guest tools discovered addresses
+          items:
+            type: string
+            description: The guest tools discovered addresses
+      description: NetworkInterface
+    PageVirtual Machine Network Address:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Virtual Machine Network Address'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: '#/components/schemas/Sort'
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+    Sort:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+    Virtual Machine Network Address:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The virtual machine identifier
+          example: 55d5b3adf4fef55f2985ba3e
+        name:
+          type: string
+          description: The virtual machine name
+          example: my-virtual-machine
+        networkInterfaces:
+          type: array
+          description: The virtual machine network interfaces
+          items:
+            $ref: '#/components/schemas/NetworkInterfaceView'
+    PageVirtual Network Base View:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Virtual Network Base view'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    DiskView:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The disk identifier.
+        size:
+          type: integer
+          description: Disk size in MB
+          format: int64
+          example: 10240
+        uuid:
+          type: string
+          description: Disk UUID
+        label:
+          type: string
+          description: Disk label
+      description: Disk
+    VirtualMachineView:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The virtual machine identifier
+          example: 55d5b3adf4fef55f2985ba3e
+        name:
+          type: string
+          description: The virtual machine name
+          example: my-virtual-machine
+        backupProfile:
+          type: string
+          description: The backup profile for this virtual machine
+        state:
+          type: string
+          description: The state of the virtual machine
+          example: POWEREDON
+          enum:
+          - UNKNOWN
+          - NEW
+          - DEPLOYING
+          - DEPLOYED
+          - POWEREDON
+          - POWEREDOFF
+          - SUSPENDED
+          - TERMINATED
+          - PROVISIONING
+          - FAILED
+          - DEPLOYMENT_FAILED
+        totalDiskSize:
+          type: integer
+          description: Total disk size in MB
+          format: int64
+          example: 1024
+        guestToolsStatus:
+          type: string
+          description: Indicating the guest tools status
+        backupProfileName:
+          type: string
+          description: The backup profile name for this virtual machine
+        template:
+          type: string
+          description: The template selected when this machine is deployed
+          example: ubuntu-16.04
+        initialPassword:
+          type: string
+          description: The initial password
+        tags:
+          type: array
+          description: The tags
+          example: "[tag1,tag2,...]"
+          items:
+            type: string
+            description: The tags
+            example: "[tag1,tag2,...]"
+        imageFile:
+          type: string
+          description: The image/ISO file connected to this virtual machine
+        snapshotCount:
+          type: integer
+          description: Number of snapshots
+          format: int32
+        groupName:
+          type: string
+          description: The group this virtual machine belong to
+          example: my-group
+        hostname:
+          type: string
+          description: The virtual machine hostname
+          example: my-virtual-machine
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        lastModifiedBy:
+          type: string
+        group:
+          type: string
+          description: The group this virtual machine belong to
+          example: 55d5b3adf4fef55f2985ba3e
+        provisioningType:
+          type: string
+          description: The provisioning type used when deploying this virtual machine
+        comments:
+          type: string
+          description: Notes
+        computeCluster:
+          type: string
+          description: The compute cluster for this virtual machine
+          example: express-pdc1
+        flavor:
+          type: string
+          description: The flavor for this virtual machine
+        cpuCores:
+          type: integer
+          description: Number of CPU cores
+          format: int32
+          example: 1
+        guestId:
+          type: string
+          description: The guest identifier selected when this machine is deployed
+          example: Ubuntu64Guest
+        managed:
+          type: boolean
+          description: Indicating that this is a managed virtual machine
+        lastModifiedAt:
+          type: string
+          format: date-time
+        terminationProtectionEnabled:
+          type: boolean
+          description: Indicating that termination protection is enabled
+        initialUsername:
+          type: string
+          description: The initial username
+        memory:
+          type: integer
+          description: Memory in MB
+          format: int32
+          example: 1024
+        disks:
+          type: array
+          description: The disks configured for this virtual machine
+          items:
+            $ref: '#/components/schemas/DiskView'
+        cpuSockets:
+          type: integer
+          description: Number of CPU sockets
+          format: int32
+        networkInterfaces:
+          type: array
+          description: The network interfaces configured for this virtual machine
+          items:
+            $ref: '#/components/schemas/NetworkInterfaceView'
+      description: VirtualMachine
+    PageVirtual Machine Task:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Virtual Machine Task'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    MetaData:
+      type: object
+      properties:
+        start:
+          type: integer
+          format: int64
+        end:
+          type: integer
+          format: int64
+        step:
+          type: integer
+          format: int32
+        legend:
+          type: array
+          items:
+            type: string
+    RRDContent:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/MetaData'
+        data:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+    RRDResultRRDContent:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/RRDContent'
+        status:
+          type: string
+    VirtualMachineSnapshot:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The snapshot name
+        parent:
+          type: integer
+          description: The parent snapshot
+          format: int32
+        id:
+          type: integer
+          description: The snapshot identifier
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        memoryMb:
+          type: integer
+          description: Memory in MB at the time of the snapshot
+          format: int64
+        current:
+          type: boolean
+        deltaMb:
+          type: integer
+          description: The size of the delta after this snapshot
+          format: int64
+    Backup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The backup identifier
+        state:
+          type: string
+          description: The backups state
+          enum:
+          - IN_PROGRESS
+          - FAILED
+          - SUCCESS
+          - EXPIRED
+        date:
+          type: string
+          description: The backups date
+          format: date-time
+        totalSizeMb:
+          type: integer
+          description: The total backups size (since first backup)
+          format: int64
+        backupSizeMb:
+          type: integer
+          description: The total backups size (since first backup)
+          format: int64
+      description: The backups
+    Virtual Machine Backup view:
+      type: object
+      properties:
+        backupProfileName:
+          type: string
+          description: The backup profile name
+        backups:
+          type: array
+          description: The backups
+          items:
+            $ref: '#/components/schemas/Backup'
+    Virtual Machine Usage:
+      type: object
+      properties:
+        dataTraffic:
+          type: number
+          description: Usage of dataTraffic of public networks in MB
+        snapShotSize:
+          type: number
+          description: Usage of snapshots in MB
+        winLic:
+          type: number
+          description: Usage of Windows Licences
+        poweredOn:
+          type: number
+          description: Usage of how many virtual machines were active in the period
+        virtualMachineName:
+          type: string
+          description: Name of the virtual machine
+        groupName:
+          type: string
+          description: Group name of the virtualmachine if set
+        group:
+          type: string
+          description: Group ID of the virtualmachine if set
+        cpuCores:
+          type: number
+          description: Usage of cpuCores
+        diskSize:
+          type: number
+          description: Usage of disksize in MB
+        virtualMachine:
+          type: string
+          description: ID of the virtual machine
+        memory:
+          type: number
+          description: Usage of memory in MB
+      description: Virtual machines for this customer and cluster with usage
+    VirtualMachineCustomerUsage:
+      type: object
+      properties:
+        virtualMachines:
+          type: array
+          description: Virtual machines for this customer and cluster with usage
+          items:
+            $ref: '#/components/schemas/Virtual Machine Usage'
+        customer:
+          type: string
+          description: ID of the customer for this usage
+        cluster:
+          type: string
+          description: The cluster with usage
+          example: VirtualMachine.Express
+        customerName:
+          type: string
+          description: Name of the customer for this usage
+        clusterName:
+          type: string
+          description: Pretty cluster name with usage
+          example: Express
+    Compute Cluster Customer Usage:
+      type: object
+      properties:
+        cluster:
+          type: string
+          description: The cluster with usage
+          example: VirtualMachine.Express
+        clusterName:
+          type: string
+          description: Pretty cluster name
+          example: Express
+        customers:
+          type: array
+          description: A list of usage per customer in this cluster
+          items:
+            $ref: '#/components/schemas/Customer Usage'
+      description: Contains the IaaS usage of customers per cluster
+    Customer Usage:
+      type: object
+      properties:
+        dataTraffic:
+          type: number
+          description: Usage of dataTraffic of public networks in MB
+        snapShotSize:
+          type: number
+          description: Usage of snapshots in MB
+        customer:
+          type: string
+          description: Id of the customer
+        customerName:
+          type: string
+          description: Name of the customer
+        winLic:
+          type: number
+          description: Usage of Windows Licences
+        poweredOn:
+          type: number
+          description: Usage of how many virtual machines were active in the period
+        cpuCores:
+          type: number
+          description: Usage of cpuCores
+        diskSize:
+          type: number
+          description: Usage of disksize in MB
+        memory:
+          type: number
+          description: Usage of memory in MB
+      description: A list of usage per customer in this cluster
+    PageString:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            type: string
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    Limit:
+      type: object
+      properties:
+        name:
+          type: string
+        current:
+          type: integer
+          format: int64
+        limit:
+          type: integer
+          format: int64
+        limitExceeded:
+          type: boolean
+    VirtualMachineGuestIdView:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        icon:
+          type: string
+        group:
+          type: string
+    BackupProfile:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The backup profile name
+        id:
+          type: string
+          description: The backup profile identifier
+        description:
+          type: string
+          description: The backup profile description
+        computeClusters:
+          type: array
+          description: The compute cluster where this backup profile is available
+          items:
+            type: string
+            description: The compute cluster where this backup profile is available
+    BackupView:
+      type: object
+      properties:
+        state:
+          type: string
+          enum:
+          - IN_PROGRESS
+          - FAILED
+          - SUCCESS
+          - EXPIRED
+        date:
+          type: string
+          format: date-time
+        totalSize:
+          type: integer
+          format: int64
+        backupSize:
+          type: integer
+          format: int64
+    Virtual Machine Backup Overview:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          type: string
+          enum:
+          - IN_PROGRESS
+          - FAILED
+          - SUCCESS
+          - EXPIRED
+        lastBackupDate:
+          type: string
+          format: date-time
+        backups:
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupView'
+        virtualMachineId:
+          type: string
+        virtualMachineName:
+          type: string
+    PageVirtual Machine Base View:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Virtual Machine Base view'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    Virtual Machine Base view:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The virtual machine identifier
+          example: 55d5b3adf4fef55f2985ba3e
+        name:
+          type: string
+          description: The virtual machine name
+          example: my-virtual-machine
+        state:
+          type: string
+          description: The state of the virtual machine
+          example: POWEREDON
+          enum:
+          - UNKNOWN
+          - NEW
+          - DEPLOYING
+          - DEPLOYED
+          - POWEREDON
+          - POWEREDOFF
+          - SUSPENDED
+          - TERMINATED
+          - PROVISIONING
+          - FAILED
+          - DEPLOYMENT_FAILED
+        totalDiskSize:
+          type: integer
+          description: Total disk size in MB
+          format: int64
+          example: 1024
+        guestToolsStatus:
+          type: string
+          description: Indicating the guest tools status
+        template:
+          type: string
+          description: The template selected when this machine is deployed
+          example: ubuntu-16.04
+        snapshotCount:
+          type: integer
+          description: Number of snapshots
+          format: int32
+        groupName:
+          type: string
+          description: The group this virtual machine belong to
+          example: my-group
+        group:
+          type: string
+          description: The group this virtual machine belong to
+          example: 55d5b3adf4fef55f2985ba3e
+        computeCluster:
+          type: string
+          description: The compute cluster for this virtual machine
+          example: express-pdc1
+        cpuCores:
+          type: integer
+          description: Number of CPU cores
+          format: int32
+          example: 1
+        managed:
+          type: boolean
+          description: Indicating that this is a managed virtual machine
+        memory:
+          type: integer
+          description: Memory in MB
+          format: int32
+          example: 1024
+    VirtualMachineTemplate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The template name
+        description:
+          type: string
+          description: Description
+        minimalMemory:
+          type: integer
+          description: Minimal memory size for this template
+          format: int32
+        minimalDiskSize:
+          type: integer
+          description: Minimal disk size of the first disk
+          format: int64
+        minimalCpuCores:
+          type: integer
+          description: Minimal amount of CPU cores for this template
+          format: int32
+        category:
+          $ref: '#/components/schemas/VirtualMachineTemplateCategory'
+    VirtualMachineTemplateCategory:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ObjectId'
+        name:
+          type: string
+        logo:
+          type: string
+      description: Category
+    Virtual Machine Schedule:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ObjectId'
+        active:
+          type: boolean
+          description: Is this schedule active
+          example: true
+        tag:
+          type: string
+          description: "Tag of the Virtual Machines (if Virtual Machine Tag is chosen,\
+            \ otherwise returns null)"
+          example: example-tag
+        days:
+          type: array
+          description: "If scheduled, on which days of the week should it run"
+          example:
+          - 1
+          - 2
+          - 3
+          items:
+            type: integer
+            description: "If scheduled, on which days of the week should it run"
+            format: int32
+        description:
+          type: string
+          description: The schedule name
+          example: example
+        action:
+          type: string
+          description: What action should be performed on the Virtual Machine
+          example: POWERON
+          enum:
+          - POWERON
+          - RESTART
+          - RESET
+          - POWEROFF
+          - SHUTDOWN
+          - SUSPEND
+          - OPENCONSOLE
+          - INSTALL_GUEST_TOOLS
+          - UPGRADE_GUEST_TOOLS
+          - POWERON_BIOS
+          - RESTART_BIOS
+          - RESET_BIOS
+          - MOUNT_ISO
+          - UNMOUNT_ISO
+          - REFRESH_STATE
+        repeatable:
+          type: boolean
+          description: Will this schedule run periodilcally
+          example: true
+        virtualMachineName:
+          type: string
+          description: "Name of the Virtual Machine (if single Virtual Machine is\
+            \ chosen, otherwise returns null)"
+          example: example-vm
+        groupName:
+          type: string
+          description: "Name of the Virtual Machine Group (if Virtual Machine Group\
+            \ is chosen, otherwise returns null)"
+          example: example-group
+        group:
+          $ref: '#/components/schemas/ObjectId'
+        startDate:
+          type: string
+          description: First date of execution timestamp
+          format: date-time
+        virtualMachine:
+          $ref: '#/components/schemas/ObjectId'
+    PageVirtual Machine Schedule:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Virtual Machine Schedule'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    Identity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier
+        name:
+          type: string
+          description: The name
+    Image File Extended view:
+      type: object
+      properties:
+        fileSize:
+          type: integer
+          description: The image file size
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        name:
+          type: string
+          description: The image file name
+        id:
+          type: string
+          description: The image file identifier
+        state:
+          type: string
+          description: The image file upload state
+          enum:
+          - NEW
+          - UPLOADING
+          - QUEUED
+          - MOVING
+          - FAILED
+          - SUCCESS
+          - DELETED
+    PageImage File:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image File'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    ComputeClusterFlavor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The flavor name
+        cpuCores:
+          type: integer
+          description: The amount of CPU cores for this flavor
+          format: int32
+        diskSize:
+          type: integer
+          description: The disk size for this flavor
+          format: int64
+        memory:
+          type: integer
+          description: The amount of memory in MB for this flavor
+          format: int32
+    ComputeCluster:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The compute cluster identifier
+        description:
+          type: string
+          description: The compute cluster name
+        customizationEnabled:
+          type: boolean
+          description: Indicating that virtual machine can be customized on this compute
+            cluster
+  securitySchemes:
+    Previder Portal Token:
+      type: apiKey
+      name: X-Auth-Token
+      in: header
