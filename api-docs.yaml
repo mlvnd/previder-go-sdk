@@ -21,31 +21,31 @@ info:
         provided to be able to perform automated client throttling.</p>
   version: "2.1"
 servers:
-- url: https://portal.previder.nl/
-  description: Generated server url
+  - url: https://portal.previder.nl/
+    description: Generated server url
 security:
-- Previder Portal Token:
-  - read
-  - write
+  - PreviderPortalToken:
+      - read
+      - write
 tags:
-- name: IaaS Compute Cluster API
-- name: IaaS ISO API
-- name: IaaS Image File API
-- name: IaaS Image File Upload API
-- name: IaaS Task API
-- name: IaaS Template API
-- name: IaaS Virtual Machine API
-- name: IaaS Virtual Machine Backup API
-- name: IaaS Virtual Machine Schedule API
-- name: IaaS Virtual Machine Snapshot API
-- name: IaaS Virtual Machine Statistics API
-- name: IaaS Virtual Machine Usage API
-- name: IaaS Virtual Network API
+  - name: IaaS Compute Cluster API
+  - name: IaaS ISO API
+  - name: IaaS Image File API
+  - name: IaaS Image File Upload API
+  - name: IaaS Task API
+  - name: IaaS Template API
+  - name: IaaS Virtual Machine API
+  - name: IaaS Virtual Machine Backup API
+  - name: IaaS Virtual Machine Schedule API
+  - name: IaaS Virtual Machine Snapshot API
+  - name: IaaS Virtual Machine Statistics API
+  - name: IaaS Virtual Machine Usage API
+  - name: IaaS Virtual Network API
 paths:
   /api/v2/iaas/computecluster/:
     get:
       tags:
-      - IaaS Compute Cluster API
+        - IaaS Compute Cluster API
       description: List all available compute clusters
       operationId: list_5
       responses:
@@ -60,23 +60,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/computecluster/{id}/flavor:
     get:
       tags:
-      - IaaS Compute Cluster API
+        - IaaS Compute Cluster API
       description: List all available flavors in the specific compute clusters
       operationId: flavorList
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -89,28 +89,28 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/imagefile/:
     get:
       tags:
-      - IaaS Image File API
+        - IaaS Image File API
       description: List image files
       operationId: list_4
       parameters:
-      - name: query
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "200":
           description: OK
@@ -121,14 +121,14 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Image File API
+        - IaaS Image File API
       description: Create a new image file to upload
       operationId: create_3
       requestBody:
@@ -147,23 +147,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/imagefile/{id}:
     get:
       tags:
-      - IaaS Image File API
+        - IaaS Image File API
       description: Get a specific image file
       operationId: get_6
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/ObjectId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
       responses:
         "200":
           description: OK
@@ -174,106 +174,106 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS Image File API
+        - IaaS Image File API
       description: Delete an image file
       operationId: delete_3
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/ObjectId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
       responses:
         "200":
           description: OK
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/imagefile/{id}/upload:
     get:
       tags:
-      - IaaS Image File Upload API
+        - IaaS Image File Upload API
       operationId: uploadGet
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/ObjectId'
-      - name: flowChunkNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+        - name: flowChunkNumber
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Image File Upload API
+        - IaaS Image File Upload API
       operationId: uploadData
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/ObjectId'
-      - name: flowChunkNumber
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: flowTotalChunks
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: flowTotalSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: flowChunkSize
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: flowFilename
-        in: query
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
+        - name: flowChunkNumber
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: flowTotalChunks
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: flowTotalSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: flowChunkSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: flowFilename
+          in: query
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               required:
-              - file
+                - file
               type: object
               properties:
                 file:
@@ -285,23 +285,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/imagefile/{imageFileId}/virtualmachines:
     get:
       tags:
-      - IaaS Image File API
+        - IaaS Image File API
       description: Get a page of Virtual Servers for this image file
       operationId: listPageVirtualMachinesByImageFileId
       parameters:
-      - name: imageFileId
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/ObjectId'
+        - name: imageFileId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
       responses:
         "200":
           description: OK
@@ -314,29 +314,29 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/schedule/:
     get:
       tags:
-      - IaaS Virtual Machine Schedule API
+        - IaaS Virtual Machine Schedule API
       description: Get a list of all schedules
       operationId: list_3
       parameters:
-      - name: query
-        in: query
-        required: false
-        schema:
-          type: string
-          default: ""
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ""
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "200":
           description: OK
@@ -347,14 +347,14 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Virtual Machine Schedule API
+        - IaaS Virtual Machine Schedule API
       description: Create a new virtual machine schedule
       operationId: create_2
       requestBody:
@@ -369,23 +369,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/schedule/{id}:
     get:
       tags:
-      - IaaS Virtual Machine Schedule API
+        - IaaS Virtual Machine Schedule API
       description: Get a specific virtual machine schedule
       operationId: get_5
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -396,22 +396,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     put:
       tags:
-      - IaaS Virtual Machine Schedule API
+        - IaaS Virtual Machine Schedule API
       description: Update a virtual machine schedule
       operationId: update_2
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -424,45 +424,45 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS Virtual Machine Schedule API
+        - IaaS Virtual Machine Schedule API
       description: Delete a virtual machine schedule
       operationId: delete_2
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/schedule/{id}/runonce:
     post:
       tags:
-      - IaaS Virtual Machine Schedule API
+        - IaaS Virtual Machine Schedule API
       description: Run a virtual machine schedule once
       operationId: runOnce
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -473,25 +473,25 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/task/:
     get:
       tags:
-      - IaaS Task API
+        - IaaS Task API
       description: List recent tasks
       operationId: recent
       parameters:
-      - name: period
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 300
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 300
       responses:
         "200":
           description: OK
@@ -504,30 +504,30 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/task/virtualmachine/{id}:
     get:
       tags:
-      - IaaS Task API
+        - IaaS Task API
       description: List tasks for a specific virtualmachine
       operationId: virtualMachineTasks
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: period
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 300
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 300
       responses:
         "200":
           description: OK
@@ -540,23 +540,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/task/{id}:
     get:
       tags:
-      - IaaS Task API
+        - IaaS Task API
       description: Get a specific task
       operationId: get_4
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          $ref: '#/components/schemas/ObjectId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectId'
       responses:
         "200":
           description: OK
@@ -567,15 +567,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/template/:
     get:
       tags:
-      - IaaS Template API
+        - IaaS Template API
       description: List all virtual machine templates
       operationId: list_2
       responses:
@@ -590,33 +590,33 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a list of all virtual machines
       operationId: list_1
       parameters:
-      - name: query
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: tags
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "200":
           description: OK
@@ -627,14 +627,14 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Create a new virtual machine
       operationId: create_1
       requestBody:
@@ -659,15 +659,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/backupoverview:
     get:
       tags:
-      - IaaS Virtual Machine Backup API
+        - IaaS Virtual Machine Backup API
       description: Get a overview of all backups
       operationId: getBackupsOverview
       responses:
@@ -682,15 +682,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/backupprofile:
     get:
       tags:
-      - IaaS Virtual Machine Backup API
+        - IaaS Virtual Machine Backup API
       description: Get a specific virtual machine
       operationId: getBackupProfiles
       responses:
@@ -705,15 +705,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/guestids:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a list of available guest operating systems
       operationId: getGuestIdList
       responses:
@@ -728,15 +728,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/limit:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get limits for all virtual machines
       operationId: getLimits
       responses:
@@ -754,15 +754,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/price:
     post:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a quotation for the supplied virtual machine
       operationId: getPrice_1
       requestBody:
@@ -781,15 +781,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/tags:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a list of virtual machine tags
       operationId: getTags
       responses:
@@ -804,28 +804,28 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/tags/page:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a page of virtual machine tags
       operationId: getTagsPage
       parameters:
-      - name: page
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
-      - name: query
-        in: query
-        required: false
-        schema:
-          type: string
+        - name: page
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -836,24 +836,24 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/usage/count:
     get:
       tags:
-      - IaaS Virtual Machine Usage API
+        - IaaS Virtual Machine Usage API
       description: Get the number of virtual servers of a specific year
       operationId: getVirtualMachineCountUsage
       parameters:
-      - name: year
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -869,30 +869,30 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/usage/monthly/cluster:
     get:
       tags:
-      - IaaS Virtual Machine Usage API
+        - IaaS Virtual Machine Usage API
       description: Get the resources per cluster and customer
       operationId: getCustomerComputeClusterMonthlyUsage
       parameters:
-      - name: month
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: convertHoursToUnits
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: true
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: convertHoursToUnits
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
       responses:
         "200":
           description: OK
@@ -905,36 +905,36 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/usage/monthly/cluster/{cluster}:
     get:
       tags:
-      - IaaS Virtual Machine Usage API
+        - IaaS Virtual Machine Usage API
       description: "Get the resources of a cluster, per cluster customer and virtual\
         \ machine"
       operationId: getCustomerComputeClusterVirtualMachineMonthlyUsage
       parameters:
-      - name: cluster
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: month
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: convertHoursToUnits
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: true
+        - name: cluster
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: convertHoursToUnits
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
       responses:
         "200":
           description: OK
@@ -947,31 +947,31 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/usage/monthly/export:
     get:
       tags:
-      - IaaS Virtual Machine Usage API
+        - IaaS Virtual Machine Usage API
       description: "Get the resources of all clusters, per cluster customer and virtual\
         \ machine"
       operationId: getCustomerComputeClusterVirtualMachineMonthlyTotalUsage
       parameters:
-      - name: month
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: convertHoursToUnits
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: true
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: convertHoursToUnits
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
       responses:
         "200":
           description: OK
@@ -984,33 +984,33 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/usage/resource:
     get:
       tags:
-      - IaaS Virtual Machine Usage API
+        - IaaS Virtual Machine Usage API
       description: Get the resource usage of a specific year
       operationId: getVirtualMachineResourceUsage
       parameters:
-      - name: year
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-      - name: type
-        in: query
-        required: true
-        schema:
-          type: string
-          enum:
-          - VCPU
-          - MEMORY
-          - STORAGE
+        - name: year
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - VCPU
+              - MEMORY
+              - STORAGE
       responses:
         "200":
           description: OK
@@ -1026,23 +1026,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a specific virtual machine
       operationId: get_1
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1053,22 +1053,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     put:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Update a virtual machine
       operationId: update_1
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1091,22 +1091,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Delete a virtual machine
       operationId: delete_1
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1117,45 +1117,45 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/action/{action}:
     post:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: "Execute a control task (e.g. poweron, poweroff, reset) on a specific\
         \ virtual machine"
       operationId: control
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: action
-        in: path
-        required: true
-        schema:
-          type: string
-          enum:
-          - POWERON
-          - RESTART
-          - RESET
-          - POWEROFF
-          - SHUTDOWN
-          - SUSPEND
-          - OPENCONSOLE
-          - INSTALL_GUEST_TOOLS
-          - UPGRADE_GUEST_TOOLS
-          - POWERON_BIOS
-          - RESTART_BIOS
-          - RESET_BIOS
-          - MOUNT_ISO
-          - UNMOUNT_ISO
-          - REFRESH_STATE
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: action
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - POWERON
+              - RESTART
+              - RESET
+              - POWEROFF
+              - SHUTDOWN
+              - SUSPEND
+              - OPENCONSOLE
+              - INSTALL_GUEST_TOOLS
+              - UPGRADE_GUEST_TOOLS
+              - POWERON_BIOS
+              - RESTART_BIOS
+              - RESET_BIOS
+              - MOUNT_ISO
+              - UNMOUNT_ISO
+              - REFRESH_STATE
       responses:
         "200":
           description: OK
@@ -1166,29 +1166,29 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/backup:
     get:
       tags:
-      - IaaS Virtual Machine Backup API
+        - IaaS Virtual Machine Backup API
       description: Get a specific virtual machine
       operationId: get_3
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: expired
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: false
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: expired
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         "200":
           description: OK
@@ -1199,28 +1199,28 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/backup/{backupId}/restore:
     post:
       tags:
-      - IaaS Virtual Machine Backup API
+        - IaaS Virtual Machine Backup API
       description: Restore the backup of a specific virtual machine
       operationId: restoreBackup
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: backupId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: backupId
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1237,23 +1237,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/cdrom:
     post:
       tags:
-      - IaaS ISO API
+        - IaaS ISO API
       description: Mount an image to a virtual machine
       operationId: mountImageFile
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1270,22 +1270,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS ISO API
+        - IaaS ISO API
       description: Unmount an image from a virtual machine
       operationId: unmountImageFile
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1296,23 +1296,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/comments:
     put:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Update the notes for a virtual machine
       operationId: updateNotes
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1325,23 +1325,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/console:
     post:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get the console of the specified virtual machine
       operationId: console
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1352,52 +1352,52 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/disk/{diskId}/stats:
     get:
       tags:
-      - IaaS Virtual Machine Statistics API
+        - IaaS Virtual Machine Statistics API
       description: Get statistics for a specific virtual disk
       operationId: getDisksStats
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: diskId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: month
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: startDate
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: endDate
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: module
-        in: query
-        required: false
-        schema:
-          type: string
-          default: ""
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: diskId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: module
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ""
       responses:
         "200":
           description: OK
@@ -1408,46 +1408,46 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/networkinterface/{networkInterfaceId}/stats:
     get:
       tags:
-      - IaaS Virtual Machine Statistics API
+        - IaaS Virtual Machine Statistics API
       description: Get statistics for a specific virtual network interface
       operationId: getNetworkInterfaceStats
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: networkInterfaceId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: month
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: startDate
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: endDate
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: networkInterfaceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         "200":
           description: OK
@@ -1458,23 +1458,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/snapshot:
     get:
       tags:
-      - IaaS Virtual Machine Snapshot API
+        - IaaS Virtual Machine Snapshot API
       description: Get a list of snapshots
       operationId: getSnapshots
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1487,22 +1487,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Virtual Machine Snapshot API
+        - IaaS Virtual Machine Snapshot API
       description: Create a new snapshot
       operationId: createSnapshot
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1519,29 +1519,29 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/snapshot/{snapshotId}:
     put:
       tags:
-      - IaaS Virtual Machine Snapshot API
+        - IaaS Virtual Machine Snapshot API
       description: Revert to an existing snapshot
       operationId: revertSnapshot
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: snapshotId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: snapshotId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
       responses:
         "200":
           description: OK
@@ -1552,34 +1552,34 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS Virtual Machine Snapshot API
+        - IaaS Virtual Machine Snapshot API
       description: Delete a specific snapshot
       operationId: deleteSnapshot
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: snapshotId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: removeChildren
-        in: query
-        required: false
-        schema:
-          type: boolean
-          default: false
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: snapshotId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: removeChildren
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         "200":
           description: OK
@@ -1590,47 +1590,47 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/stats:
     get:
       tags:
-      - IaaS Virtual Machine Statistics API
+        - IaaS Virtual Machine Statistics API
       description: Get statistics for a specific virtual machine
       operationId: get_2
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: month
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: startDate
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: endDate
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
-      - name: module
-        in: query
-        required: false
-        schema:
-          type: string
-          default: ""
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: module
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ""
       responses:
         "200":
           description: OK
@@ -1641,28 +1641,28 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualmachine/{id}/task:
     get:
       tags:
-      - IaaS Virtual Machine API
+        - IaaS Virtual Machine API
       description: Get a specific virtual machine task
       operationId: task
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "200":
           description: OK
@@ -1673,43 +1673,43 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualnetwork/:
     get:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Get a list of all virtual networks
       operationId: list
       parameters:
-      - name: query
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: tags
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: type
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: publicNet
-        in: query
-        required: false
-        schema:
-          type: boolean
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: publicNet
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "200":
           description: OK
@@ -1720,14 +1720,14 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Create a new virtual network
       operationId: create
       requestBody:
@@ -1752,15 +1752,15 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualnetwork/price:
     post:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Get a quotation for the supplied virtual network
       operationId: getPrice
       requestBody:
@@ -1779,23 +1779,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualnetwork/{id}:
     get:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Get a specific virtual network
       operationId: get
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1806,22 +1806,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     put:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Update a virtual network
       operationId: update
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1850,22 +1850,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Delete a virtual network
       operationId: delete
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1876,23 +1876,23 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualnetwork/{id}/addresspool:
     get:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Get a list of address pools for the specific virtual network
       operationId: getAddressPools
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1905,22 +1905,22 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     post:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Create address pool in the specified virtualNetwork
       operationId: createAddressPool
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1937,28 +1937,28 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualnetwork/{id}/addresspool/{addressPoolId}:
     get:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Get the specified address pool
       operationId: getAddressPool
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: addressPoolId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: addressPoolId
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1969,27 +1969,27 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     put:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Update address pool in the specified virtualNetwork
       operationId: updateAddressPool
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: addressPoolId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: addressPoolId
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -2006,55 +2006,55 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
     delete:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Delete the specified address pool
       operationId: deleteAddressPool
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: addressPoolId
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: addressPoolId
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
   /api/v2/iaas/virtualnetwork/{id}/virtualmachine:
     get:
       tags:
-      - IaaS Virtual Network API
+        - IaaS Virtual Network API
       description: Get a page of virtual machines for the specific virtual network
       operationId: getVirtualMachinePage
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "200":
           description: OK
@@ -2065,17 +2065,17 @@ paths:
         "401":
           description: Unauthorized or invalid token
           content:
-            application/json: {}
+            application/json: { }
         "403":
           description: "Forbidden, no permissions to view this object"
           content:
-            application/json: {}
+            application/json: { }
 components:
   schemas:
     Virtual Network Update:
       required:
-      - name
-      - tags
+        - name
+        - tags
       type: object
       properties:
         name:
@@ -2094,8 +2094,8 @@ components:
           type: array
           description: List of strings for extra search possibilities
           example:
-          - tag1
-          - tag2
+            - tag1
+            - tag2
           items:
             type: string
             description: List of strings for extra search possibilities
@@ -2109,8 +2109,8 @@ components:
           type: array
           description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
           example:
-          - network1
-          - network2
+            - network1
+            - network2
           items:
             type: string
             description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
@@ -2121,8 +2121,8 @@ components:
           type: array
           description: List of customer id's to share this network with
           example:
-          - customer1
-          - customer2
+            - customer1
+            - customer2
           items:
             type: string
             description: List of customer id's to share this network with
@@ -2176,10 +2176,10 @@ components:
           description: The task type
     AddressPoolUpdate:
       required:
-      - end
-      - mask
-      - start
-      - type
+        - end
+        - mask
+        - start
+        - type
       type: object
       properties:
         start:
@@ -2202,8 +2202,8 @@ components:
           type: array
           description: List of DNS servers (IPv4 or IPv6)
           example:
-          - 80.65.96.50
-          - 62.165.127.222
+            - 80.65.96.50
+            - 62.165.127.222
           items:
             type: string
             description: List of DNS servers (IPv4 or IPv6)
@@ -2245,7 +2245,7 @@ components:
           description: The address pool virtual network
     DiskUpdate:
       required:
-      - size
+        - size
       type: object
       properties:
         id:
@@ -2271,8 +2271,8 @@ components:
       description: Disks
     NetworkInterfaceUpdate:
       required:
-      - connected
-      - network
+        - connected
+        - network
       type: object
       properties:
         id:
@@ -2294,21 +2294,21 @@ components:
           description: "Optional parameter to set the NIC type, ignored on NIC update"
           example: VMXNET3
           enum:
-          - E1000
-          - E1000E
-          - VMXNET3
+            - E1000
+            - E1000E
+            - VMXNET3
       description: Network interfaces
     VirtualMachineUpdate:
       required:
-      - computeCluster
-      - cpuCores
-      - disks
-      - markedAsTemplate
-      - memory
-      - name
-      - networkInterfaces
-      - tags
-      - terminationProtectionEnabled
+        - computeCluster
+        - cpuCores
+        - disks
+        - markedAsTemplate
+        - memory
+        - name
+        - networkInterfaces
+        - tags
+        - terminationProtectionEnabled
       type: object
       properties:
         name:
@@ -2329,8 +2329,8 @@ components:
           type: array
           description: List of strings for extra search possibilities
           example:
-          - tag1
-          - tag2
+            - tag1
+            - tag2
           items:
             type: string
             description: List of strings for extra search possibilities
@@ -2443,7 +2443,7 @@ components:
           description: The task type
     VirtualMachineCommentsUpdate:
       required:
-      - comment
+        - comment
       type: object
       properties:
         comment:
@@ -2454,10 +2454,10 @@ components:
       description: Model to use when updating comments for a virtual machine
     Address Pool Create:
       required:
-      - end
-      - mask
-      - start
-      - type
+        - end
+        - mask
+        - start
+        - type
       type: object
       properties:
         start:
@@ -2480,8 +2480,8 @@ components:
           type: array
           description: List of DNS servers (IPv4 or IPv6)
           example:
-          - 80.65.96.50
-          - 62.165.127.222
+            - 80.65.96.50
+            - 62.165.127.222
           items:
             type: string
             description: List of DNS servers (IPv4 or IPv6)
@@ -2493,7 +2493,7 @@ components:
       description: Model to use to create a new address pool
     VirtualNetworkPriceRequest:
       required:
-      - type
+        - type
       type: object
       properties:
         type:
@@ -2530,9 +2530,9 @@ components:
       description: The quote lines
     VirtualNetworkCreate:
       required:
-      - name
-      - tags
-      - type
+        - name
+        - tags
+        - type
       type: object
       properties:
         name:
@@ -2550,11 +2550,11 @@ components:
           description: Type of the new network
           example: IAN
           enum:
-          - VLAN
-          - VXLAN
-          - NONE
-          - IAN
-          - VLAN_TRUNK
+            - VLAN
+            - VXLAN
+            - NONE
+            - IAN
+            - VLAN_TRUNK
         customerReference:
           type: string
           description: Sales reference for the new network
@@ -2564,8 +2564,8 @@ components:
           type: array
           description: List of strings for extra search possibilities
           example:
-          - tag1
-          - tag2
+            - tag1
+            - tag2
           items:
             type: string
             description: List of strings for extra search possibilities
@@ -2576,8 +2576,8 @@ components:
           type: array
           description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
           example:
-          - network1
-          - network2
+            - network1
+            - network2
           items:
             type: string
             description: List of id's or names of VLAN networks (only valid for VLAN_TRUNK)
@@ -2588,8 +2588,8 @@ components:
           type: array
           description: List of customer id's to share this network with
           example:
-          - customer1
-          - customer2
+            - customer1
+            - customer2
           items:
             type: string
             description: List of customer id's to share this network with
@@ -2597,7 +2597,7 @@ components:
       description: Model to use when creating a new network
     Virtual Machine Snapshot Create:
       required:
-      - name
+        - name
       type: object
       properties:
         name:
@@ -2621,7 +2621,7 @@ components:
           type: string
     VirtualMachineISOMount:
       required:
-      - imageFile
+        - imageFile
       type: object
       properties:
         imageFile:
@@ -2686,9 +2686,9 @@ components:
       description: Generic task view
     VirtualMachinePriceRequest:
       required:
-      - computeCluster
-      - disks
-      - networkInterfaces
+        - computeCluster
+        - disks
+        - networkInterfaces
       type: object
       properties:
         computeCluster:
@@ -2737,14 +2737,14 @@ components:
       description: To get a quotation for a specific virtual machine configuration
     VirtualMachineCreate:
       required:
-      - computeCluster
-      - cpuCores
-      - disks
-      - memory
-      - name
-      - networkInterfaces
-      - tags
-      - terminationProtectionEnabled
+        - computeCluster
+        - cpuCores
+        - disks
+        - memory
+        - name
+        - networkInterfaces
+        - tags
+        - terminationProtectionEnabled
       type: object
       properties:
         name:
@@ -2765,8 +2765,8 @@ components:
           type: array
           description: List of strings for extra search possibilities
           example:
-          - tag1
-          - tag2
+            - tag1
+            - tag2
           items:
             type: string
             description: List of strings for extra search possibilities
@@ -2851,14 +2851,14 @@ components:
             sourceVirtualMachine
           example: CLOUD_INIT_GUEST_INFO
           enum:
-          - NONE
-          - CLOUD_INIT_OVF
-          - SYSPREP
-          - SYSPREP_TEXT
-          - CONFIG_DRIVE_2
-          - KICKSTART
-          - CLOUD_INIT_OVF2
-          - CLOUD_INIT_GUEST_INFO
+            - NONE
+            - CLOUD_INIT_OVF
+            - SYSPREP
+            - SYSPREP_TEXT
+            - CONFIG_DRIVE_2
+            - KICKSTART
+            - CLOUD_INIT_OVF2
+            - CLOUD_INIT_GUEST_INFO
       description: Model to use when creating a new virtual machine
     ObjectId:
       type: object
@@ -2871,7 +2871,7 @@ components:
           format: date-time
     ImageFileCreate:
       required:
-      - name
+        - name
       type: object
       properties:
         name:
@@ -2891,13 +2891,13 @@ components:
           type: string
           description: The image file upload state
           enum:
-          - NEW
-          - UPLOADING
-          - QUEUED
-          - MOVING
-          - FAILED
-          - SUCCESS
-          - DELETED
+            - NEW
+            - UPLOADING
+            - QUEUED
+            - MOVING
+            - FAILED
+            - SUCCESS
+            - DELETED
     CustomerView:
       type: object
       properties:
@@ -3067,9 +3067,9 @@ components:
           type: string
           description: The network interface type
           enum:
-          - E1000
-          - E1000E
-          - VMXNET3
+            - E1000
+            - E1000E
+            - VMXNET3
         assignedAddresses:
           type: array
           description: The assigned addresses
@@ -3250,17 +3250,17 @@ components:
           description: The state of the virtual machine
           example: POWEREDON
           enum:
-          - UNKNOWN
-          - NEW
-          - DEPLOYING
-          - DEPLOYED
-          - POWEREDON
-          - POWEREDOFF
-          - SUSPENDED
-          - TERMINATED
-          - PROVISIONING
-          - FAILED
-          - DEPLOYMENT_FAILED
+            - UNKNOWN
+            - NEW
+            - DEPLOYING
+            - DEPLOYED
+            - POWEREDON
+            - POWEREDOFF
+            - SUSPENDED
+            - TERMINATED
+            - PROVISIONING
+            - FAILED
+            - DEPLOYMENT_FAILED
         totalDiskSize:
           type: integer
           description: Total disk size in MB
@@ -3470,10 +3470,10 @@ components:
           type: string
           description: The backups state
           enum:
-          - IN_PROGRESS
-          - FAILED
-          - SUCCESS
-          - EXPIRED
+            - IN_PROGRESS
+            - FAILED
+            - SUCCESS
+            - EXPIRED
         date:
           type: string
           description: The backups date
@@ -3685,10 +3685,10 @@ components:
         state:
           type: string
           enum:
-          - IN_PROGRESS
-          - FAILED
-          - SUCCESS
-          - EXPIRED
+            - IN_PROGRESS
+            - FAILED
+            - SUCCESS
+            - EXPIRED
         date:
           type: string
           format: date-time
@@ -3706,10 +3706,10 @@ components:
         state:
           type: string
           enum:
-          - IN_PROGRESS
-          - FAILED
-          - SUCCESS
-          - EXPIRED
+            - IN_PROGRESS
+            - FAILED
+            - SUCCESS
+            - EXPIRED
         lastBackupDate:
           type: string
           format: date-time
@@ -3769,17 +3769,17 @@ components:
           description: The state of the virtual machine
           example: POWEREDON
           enum:
-          - UNKNOWN
-          - NEW
-          - DEPLOYING
-          - DEPLOYED
-          - POWEREDON
-          - POWEREDOFF
-          - SUSPENDED
-          - TERMINATED
-          - PROVISIONING
-          - FAILED
-          - DEPLOYMENT_FAILED
+            - UNKNOWN
+            - NEW
+            - DEPLOYING
+            - DEPLOYED
+            - POWEREDON
+            - POWEREDOFF
+            - SUSPENDED
+            - TERMINATED
+            - PROVISIONING
+            - FAILED
+            - DEPLOYMENT_FAILED
         totalDiskSize:
           type: integer
           description: Total disk size in MB
@@ -3872,9 +3872,9 @@ components:
           type: array
           description: "If scheduled, on which days of the week should it run"
           example:
-          - 1
-          - 2
-          - 3
+            - 1
+            - 2
+            - 3
           items:
             type: integer
             description: "If scheduled, on which days of the week should it run"
@@ -3888,21 +3888,21 @@ components:
           description: What action should be performed on the Virtual Machine
           example: POWERON
           enum:
-          - POWERON
-          - RESTART
-          - RESET
-          - POWEROFF
-          - SHUTDOWN
-          - SUSPEND
-          - OPENCONSOLE
-          - INSTALL_GUEST_TOOLS
-          - UPGRADE_GUEST_TOOLS
-          - POWERON_BIOS
-          - RESTART_BIOS
-          - RESET_BIOS
-          - MOUNT_ISO
-          - UNMOUNT_ISO
-          - REFRESH_STATE
+            - POWERON
+            - RESTART
+            - RESET
+            - POWEROFF
+            - SHUTDOWN
+            - SUSPEND
+            - OPENCONSOLE
+            - INSTALL_GUEST_TOOLS
+            - UPGRADE_GUEST_TOOLS
+            - POWERON_BIOS
+            - RESTART_BIOS
+            - RESET_BIOS
+            - MOUNT_ISO
+            - UNMOUNT_ISO
+            - REFRESH_STATE
         repeatable:
           type: boolean
           description: Will this schedule run periodilcally
@@ -3988,13 +3988,13 @@ components:
           type: string
           description: The image file upload state
           enum:
-          - NEW
-          - UPLOADING
-          - QUEUED
-          - MOVING
-          - FAILED
-          - SUCCESS
-          - DELETED
+            - NEW
+            - UPLOADING
+            - QUEUED
+            - MOVING
+            - FAILED
+            - SUCCESS
+            - DELETED
     PageImage File:
       type: object
       properties:
