@@ -92,8 +92,8 @@ func (c *BaseClient) Put(url string, requestBody, responseBody interface{}) erro
 
 func (c *BaseClient) request(method string, url string, requestBody, responseBody interface{}) error {
 	var b *bytes.Buffer
+	b = bytes.NewBuffer(nil)
 	if requestBody != nil {
-		b = bytes.NewBuffer(nil)
 		err := json.NewEncoder(b).Encode(requestBody)
 		if err != nil {
 			return fmt.Errorf("request: %w", err)
