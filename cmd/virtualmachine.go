@@ -6,7 +6,6 @@ import (
 	"github.com/pkg/browser"
 	"github.com/previder/previder-go-sdk/client"
 	"github.com/spf13/cobra"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -78,7 +77,6 @@ func init() {
 func list(_ *cobra.Command, _ []string) error {
 	var vms []client.VirtualMachine
 	for i := 0; ; i++ {
-		log.Println(i)
 		page, content, err := previderClient.VirtualMachine.Page(i)
 		if err != nil {
 			return fmt.Errorf("list virtual machines: %w", err)
