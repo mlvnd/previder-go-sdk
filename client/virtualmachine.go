@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"strconv"
 )
 
 //noinspection GoUnusedConst
@@ -17,7 +18,7 @@ const (
 type VirtualMachineService interface {
 	ComputeClusterList() (*[]ComputeCluster, error)
 	VirtualMachineTemplateList() (*[]VirtualMachineTemplate, error)
-	Page() (*Page, *[]VirtualMachine, error)
+	Page(index int) (*Page, *[]VirtualMachine, error)
 	Get(id string) (*VirtualMachineExt, error)
 	Create(vm *VirtualMachineCreate) (*VirtualMachineTask, error)
 	Delete(id string) (*VirtualMachineTask, error)
@@ -69,30 +70,30 @@ type VirtualMachineExt struct {
 }
 
 type Disk struct {
-	Id   *string   `json:"id,omitempty"`
-	Size uint64 `json:"size"`
-	Uuid string `json:"uuid,omitempty"`
-	Label string `json:"label,omitempty"`
+	Id    *string `json:"id,omitempty"`
+	Size  uint64  `json:"size"`
+	Uuid  string  `json:"uuid,omitempty"`
+	Label string  `json:"label,omitempty"`
 }
 
 type NetworkInterface struct {
-	Id                  *string     `json:"id,omitempty"`
+	Id                  *string  `json:"id,omitempty"`
 	Network             string   `json:"network"`
 	Connected           bool     `json:"connected"`
 	MacAddress          string   `json:"macAddress,omitempty"`
 	DiscoveredAddresses []string `json:"discoveredAddresses,omitempty"`
 	AssignedAddresses   []string `json:"assignedAddresses,omitempty"`
-	Primary				bool	 `json:"primary,omitempty"`
-	Label				string	 `json:"label,omitempty"`
+	Primary             bool     `json:"primary,omitempty"`
+	Label               string   `json:"label,omitempty"`
 }
 
 type VirtualMachineCreate struct {
 	VirtualMachineExt
-	Template                     string             `json:"template,omitempty"`
-	SourceVirtualMachine         string             `json:"sourceVirtualMachine,omitempty"`
-	UserData                     string             `json:"userData,omitempty"`
-	GuestId                      string             `json:"guestId,omitempty"`
-	ProvisioningType             string             `json:"provisioningType,omitempty"`
+	Template             string `json:"template,omitempty"`
+	SourceVirtualMachine string `json:"sourceVirtualMachine,omitempty"`
+	UserData             string `json:"userData,omitempty"`
+	GuestId              string `json:"guestId,omitempty"`
+	ProvisioningType     string `json:"provisioningType,omitempty"`
 }
 
 type VirtualMachineTemplate struct {
@@ -124,15 +125,15 @@ func (c *VirtualMachineServiceOp) VirtualMachineTemplateList() (*[]VirtualMachin
 	return virtualMachineTemplates, err
 }
 
-func (c *VirtualMachineServiceOp) Page() (*Page, *[]VirtualMachine, error) {
+func (c *VirtualMachineServiceOp) Page(index int) (*Page, *[]VirtualMachine, error) {
 	page := new(Page)
-	err := c.client.Get(iaasBasePath+"virtualmachine/", page)
+	err := c.client.Get(iaasBasePath+"virtualmachine/?page="+strconv.Itoa(index)+"&size=200", page)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	virtualMachines := new([]VirtualMachine)
-	if err := json.Unmarshal([]byte(page.Content), &virtualMachines); err != nil {
+	if err := json.Unmarshal(page.Content, &virtualMachines); err != nil {
 		return nil, nil, err
 	}
 

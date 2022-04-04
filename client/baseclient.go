@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 const (
@@ -19,7 +18,7 @@ const (
 
 type BaseClient struct {
 	httpClient     *http.Client
-	clientOptions  *ClientOptions
+	clientOptions  *Options
 	Task           TaskService
 	VirtualMachine VirtualMachineService
 	VirtualNetwork VirtualNetworkService
@@ -41,7 +40,7 @@ type ApiErrorResponseBody struct {
 	Path    string `json:"path,omitempty"`
 }
 
-type ClientOptions struct {
+type Options struct {
 	Token   string
 	BaseUrl string
 }
@@ -60,7 +59,7 @@ func (e *ApiError) Error() string {
 }
 
 //noinspection GoUnusedExportedFunction
-func New(options *ClientOptions) (*BaseClient, error) {
+func New(options *Options) (*BaseClient, error) {
 	if options.Token == "" {
 		return nil, fmt.Errorf("missing token")
 	}
@@ -92,55 +91,55 @@ func (c *BaseClient) Put(url string, requestBody, responseBody interface{}) erro
 }
 
 func (c *BaseClient) request(method string, url string, requestBody, responseBody interface{}) error {
-
-	// content will be empty with GET, so can be sent anyway
-	b := new(bytes.Buffer)
-	err := json.NewEncoder(b).Encode(requestBody)
-	if err != nil {
-		return err
+	var b *bytes.Buffer
+	if requestBody != nil {
+		b = bytes.NewBuffer(nil)
+		err := json.NewEncoder(b).Encode(requestBody)
+		if err != nil {
+			return fmt.Errorf("request: %w", err)
+		}
 	}
 	req, err := http.NewRequest(method, c.clientOptions.BaseUrl+url, b)
 	if err != nil {
-		return err
+		return fmt.Errorf("request: %w", err)
 	}
 	req.Header.Set("Content-Type", jsonEncoding)
-
 	req.Header.Set("X-Auth-Token", c.clientOptions.Token)
-
 	req.Header.Set("Accept", jsonEncoding)
 
-	res, requestErr := c.httpClient.Do(req)
-	if requestErr != nil {
-		log.Printf("[ERROR] [Previder API] Error from Previder API received")
-		return requestErr
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		log.Printf("[ERROR] [Previder API] Error from Previder API received: %s", err.Error())
+		return err
 	}
 
 	defer func() {
-		err := res.Body.Close()
+		err := resp.Body.Close()
 		if err != nil {
 			log.Fatal(err)
 		}
 	}()
 
-	if res.StatusCode < 200 || res.StatusCode >= 300 {
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		apiError := new(ApiError)
 
 		var apiErrorResponseBody ApiErrorResponseBody
-		temp, err := ioutil.ReadAll(res.Body)
+		temp, err := ioutil.ReadAll(resp.Body)
 
 		err = json.Unmarshal(temp, &apiErrorResponseBody)
 		if err != nil {
-			log.Printf("[ERROR] [Previder API] Could not parse error result:" + string(temp))
+			log.Printf("[ERROR] [Previder API] Could not parse error result: %s", string(temp))
 			return err
 		}
-		log.Printf("[ERROR] [Previder API] Error while executing the request to " + apiErrorResponseBody.Path + ": [" + strconv.Itoa(apiErrorResponseBody.Status) + "] " + apiErrorResponseBody.Message)
-		apiError.Code = res.StatusCode
+		log.Printf("[ERROR] [Previder API] Error while executing the request to %s: [%d] :%s",
+			apiErrorResponseBody.Path, apiErrorResponseBody.Status, apiErrorResponseBody.Message)
+		apiError.Code = resp.StatusCode
 		apiError.Message = "[Previder API] " + apiErrorResponseBody.Message
 		return apiError
 	}
 
 	if responseBody != nil {
-		if err := json.NewDecoder(res.Body).Decode(&responseBody); err != nil {
+		if err := json.NewDecoder(resp.Body).Decode(&responseBody); err != nil {
 			if err == io.EOF {
 				return nil
 			}

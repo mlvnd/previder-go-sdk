@@ -21,7 +21,7 @@ info:
         provided to be able to perform automated client throttling.</p>
   version: "2.1"
 servers:
-- url: http://api:8080
+- url: https://portal.previder.nl/
   description: Generated server url
 security:
 - Previder Portal Token:

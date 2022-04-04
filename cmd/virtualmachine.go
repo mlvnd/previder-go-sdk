@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/browser"
-	"github.com/spf13/cobra"
 	"github.com/previder/previder-go-sdk/client"
+	"github.com/spf13/cobra"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -68,32 +69,41 @@ func init() {
 		Use:   "delete",
 		Short: "Delete a virtual machine",
 		Args:  cobra.ExactArgs(1),
-		RunE:  delete,
+		RunE:  deleteCmd,
 	}
 	virtualMachineCmd.AddCommand(cmdDelete)
 
 }
 
-func list(cmd *cobra.Command, args []string) error {
-	_, content, err := previderClient.VirtualMachine.Page()
-	if err != nil {
-		fmt.Println(err)
+func list(_ *cobra.Command, _ []string) error {
+	var vms []client.VirtualMachine
+	for i := 0; ; i++ {
+		log.Println(i)
+		page, content, err := previderClient.VirtualMachine.Page(i)
+		if err != nil {
+			return fmt.Errorf("list virtual machines: %w", err)
+		}
+		vms = append(vms, *content...)
+
+		if i == page.TotalPages {
+			break
+		}
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Name", "CPU cores", "Memory"})
-	for _, virtualMachine := range *content {
+	for _, virtualMachine := range vms {
 		table.Append([]string{
 			virtualMachine.Name,
 			strconv.Itoa(virtualMachine.CpuCores),
-			ToHumanReadable(uint64(virtualMachine.Memory * 1048576)),
+			ToHumanReadable(virtualMachine.Memory * 1048576),
 		})
 	}
 	table.Render()
 	return nil
 }
 
-func get(cmd *cobra.Command, args []string) error {
+func get(_ *cobra.Command, args []string) error {
 	content, err := previderClient.VirtualMachine.Get(args[0])
 	if err != nil {
 		fmt.Println(err)
@@ -145,7 +155,7 @@ func create(cmd *cobra.Command, args []string) error {
 			return nil
 		}
 		vm.Disks = append(vm.Disks, client.Disk{
-		//	Id:   &id,
+			//	Id:   &id,
 			Size: size / 1048576,
 		})
 	}
@@ -190,7 +200,7 @@ func create(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func delete(cmd *cobra.Command, args []string) error {
+func deleteCmd(_ *cobra.Command, args []string) error {
 	_, err := previderClient.VirtualMachine.Delete(args[0])
 	if err != nil {
 		return err
@@ -198,7 +208,7 @@ func delete(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func openConsole(cmd *cobra.Command, args []string) error {
+func openConsole(_ *cobra.Command, args []string) error {
 	res, err := previderClient.VirtualMachine.OpenConsole(args[0])
 	if err != nil {
 		return err

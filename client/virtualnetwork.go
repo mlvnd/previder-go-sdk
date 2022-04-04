@@ -24,7 +24,7 @@ type VirtualNetwork struct {
 	Id      string `json:"id"`
 	Name    string `json:"name"`
 	Group   string `json:"group,omitempty"`
-	Type	string `json:"type"`
+	Type    string `json:"type"`
 	Managed bool   `json:"managed"`
 }
 
@@ -42,7 +42,7 @@ func (c *VirtualNetworkServiceOp) Page() (*Page, *[]VirtualNetwork, error) {
 	}
 
 	virtualNetworks := new([]VirtualNetwork)
-	if err := json.Unmarshal([]byte(page.Content), &virtualNetworks); err != nil {
+	if err := json.Unmarshal(page.Content, &virtualNetworks); err != nil {
 		return nil, nil, err
 	}
 
