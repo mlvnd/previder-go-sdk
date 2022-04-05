@@ -1,9 +1,12 @@
 package client
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strconv"
+)
 
 type VirtualNetworkService interface {
-	Page() (*Page, *[]VirtualNetwork, error)
+	Page(index int) (*Page, *[]VirtualNetwork, error)
 	Get(id string) (*VirtualNetwork, error)
 	Create(vn *VirtualNetworkUpdate) (*VirtualNetworkTask, error)
 	Delete(id string) (*VirtualNetworkTask, error)
@@ -34,9 +37,9 @@ type VirtualNetworkUpdate struct {
 	Group string `json:"group,omitempty"`
 }
 
-func (c *VirtualNetworkServiceOp) Page() (*Page, *[]VirtualNetwork, error) {
+func (c *VirtualNetworkServiceOp) Page(index int) (*Page, *[]VirtualNetwork, error) {
 	page := new(Page)
-	err := c.client.Get(iaasBasePath+"virtualnetwork/", page)
+	err := c.client.Get(iaasBasePath+"virtualnetwork/?page="+strconv.Itoa(index)+"&size=200", page)
 	if err != nil {
 		return nil, nil, err
 	}
