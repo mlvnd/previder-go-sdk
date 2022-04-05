@@ -26,7 +26,7 @@ func init() {
 func listComputeClusters(_ *cobra.Command, _ []string) error {
 	clusters, err := previderClient.VirtualMachine.ComputeClusterList()
 	if err != nil {
-		return fmt.Errorf("list virtual machines: %w", err)
+		return fmt.Errorf("list compute clusters: %w", err)
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
