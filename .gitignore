@@ -3,4 +3,4 @@
 *.iml
 .env
 
-previder-go-sdk
+previder-go-sdk*
